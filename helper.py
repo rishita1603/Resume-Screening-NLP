@@ -68,8 +68,6 @@ def extract_text(uploaded_file):
     if filename.endswith(".pdf"):
         return extract_text_pdf(uploaded_file)
 
-    elif filename.endswith(".docx"):
-        return extract_text_docx(uploaded_file)
 
     elif filename.endswith(".txt"):
         return extract_text_txt(uploaded_file)
@@ -230,17 +228,52 @@ def calculate_similarity(
 # ==================================================
 # RECOMMENDATION
 # ==================================================
-
-def get_recommendation(score):
+def get_recommendation(score, csv=False):
 
     if score >= 80:
-
-        return "🟢 Strong Match"
+        return "Strong Match" if csv else "🟢 Strong Match"
 
     elif score >= 60:
-
-        return "🟡 Moderate Match"
+        return "Moderate Match" if csv else "🟡 Moderate Match"
 
     else:
+        return "Low Match" if csv else "🔴 Low Match"
 
-        return "🔴 Low Match"
+
+def extract_email(text):
+
+    pattern = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+
+    match = re.search(pattern, text)
+
+    if match:
+        return match.group()
+
+    return "Not Found"
+
+
+def extract_phone(text):
+
+    pattern = r"(?:\+91[-\s]?)?[6-9]\d{9}"
+
+    match = re.search(pattern, text)
+
+    if match:
+        return match.group()
+
+    return "Not Found"
+
+
+def extract_name(text):
+
+    lines = text.split("\n")
+
+    for line in lines:
+
+        line = line.strip()
+
+        if len(line.split()) >= 2 and len(line) < 40:
+
+            return line
+
+    return "Unknown"

@@ -3,3 +3,5 @@ pandas
 pymupdf
 scikit-learn
 nltk
+matplotlib 
+numpy
